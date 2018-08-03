@@ -14,7 +14,7 @@ module.exports = (text, callback) => {
     selection.removeAllRanges();
     document.body.removeChild(textarea);
 
-    if (callback) callback();
+    if (typeof callback === 'function') callback();
   } catch (e) {
     console.warn('Copy to clipboard failed.', e);
   }
