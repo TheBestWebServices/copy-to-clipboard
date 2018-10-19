@@ -6,12 +6,12 @@ export default (text, callback) => {
 
   try {
     if (document.body.createTextRange) {
-      let textRange = document.body.createTextRange();
+      const textRange = document.body.createTextRange();
       textRange.moveToElementText(textNode);
       textRange.select();
       document.execCommand('copy');
     } else {
-      let range = document.createRange();
+      const range = document.createRange();
       range.selectNodeContents(textNode);
       selection().removeAllRanges();
       selection().addRange(range);
