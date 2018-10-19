@@ -1,18 +1,25 @@
-module.exports = (text, callback) => {
-  let textarea = document.createElement('textarea');
-  textarea.textContent = text;
-  document.body.appendChild(textarea);
+export default (text, callback) => {
+  const selection = window.getSelection;
+  const textNode = document.createTextNode(text);
 
-  let selection = document.getSelection();
-  let range = document.createRange();
-  range.selectNode(textarea);
-  selection.removeAllRanges();
-  selection.addRange(range);
+  document.body.appendChild(textNode);
 
   try {
-    document.execCommand('copy');
-    selection.removeAllRanges();
-    document.body.removeChild(textarea);
+    if (document.body.createTextRange) {
+      let textRange = document.body.createTextRange();
+      textRange.moveToElementText(textNode);
+      textRange.select();
+      document.execCommand('copy');
+    } else {
+      let range = document.createRange();
+      range.selectNodeContents(textNode);
+      selection().removeAllRanges();
+      selection().addRange(range);
+      document.execCommand('copy');
+      selection().removeAllRanges();
+    }
+
+    textNode.remove();
 
     if (typeof callback === 'function') callback();
   } catch (e) {
